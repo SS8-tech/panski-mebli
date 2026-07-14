@@ -623,6 +623,7 @@ footer{
     }
 
     .secondary-btn{
+        color: black;
         width: 110px;
         height: 70px;
         font-size: 12px;
