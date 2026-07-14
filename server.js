@@ -40,6 +40,9 @@ app.post("/api/contact", async (req, res) => {
 
     try {
 
+        console.log(process.env.EMAIL_USER);
+console.log(process.env.EMAIL_TO);
+
         await transporter.sendMail({
 
             from: process.env.EMAIL_USER,
