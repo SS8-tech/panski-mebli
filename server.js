@@ -16,12 +16,14 @@ const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
-    family: 4, // примусово використовувати IPv4
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        family: 4
     }
-});
+})
 
 
 app.use(cors());
@@ -41,7 +43,8 @@ app.post("/api/contact", async (req, res) => {
 
     try {
 
-        console.log("Before sendMail");
+        console.log("EMAIL:", process.env.EMAIL_USER)
+console.log("PASS:", process.env.EMAIL_PASS ? "Є" : "Немає")
 
 await transporter.sendMail({
 
@@ -67,8 +70,6 @@ await transporter.sendMail({
             `
 
         });
-
-        console.log("After sendMail");
 
         res.json({
 
