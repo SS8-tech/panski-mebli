@@ -38,7 +38,10 @@ app.post("/api/contact", async (req, res) => {
 
     try {
 
-        await transporter.sendMail({
+        console.log("Before sendMail");
+
+await transporter.sendMail({
+
 
             from: process.env.EMAIL_USER,
 
