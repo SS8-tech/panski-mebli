@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     family: 4, // примусово використовувати IPv4
     auth: {
         user: process.env.EMAIL_USER,
