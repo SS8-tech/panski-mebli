@@ -65,6 +65,8 @@ await transporter.sendMail({
 
         });
 
+        console.log("After sendMail");
+
         res.json({
 
             success: true
