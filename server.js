@@ -43,8 +43,7 @@ app.post("/api/contact", async (req, res) => {
 
     try {
 
-        console.log("EMAIL:", process.env.EMAIL_USER)
-console.log("PASS:", process.env.EMAIL_PASS ? "Є" : "Немає")
+        console.log("before sendmail");
 
 await transporter.sendMail({
 
@@ -68,8 +67,9 @@ await transporter.sendMail({
                 <p>${message}</p>
 
             `
-
         });
+
+        console.log("after sendmail");
 
         res.json({
 
@@ -81,7 +81,7 @@ await transporter.sendMail({
 
     catch(error){
 
-        console.log(error);
+        console.log("SEND ERROR:", error);
 
         res.status(500).json({
 
