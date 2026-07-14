@@ -1,7 +1,7 @@
-require("dotenv").config();
-
 const dns = require("node:dns");
 dns.setDefaultResultOrder("ipv4first");
+
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -20,10 +20,10 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    tls: {
+    dns: {
         family: 4
     }
-})
+});
 
 
 app.use(cors());
