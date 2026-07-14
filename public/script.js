@@ -334,9 +334,9 @@ const products = {
 
         images: [
             "wardrobe1.jpg",
-            "wardrobe22.jpg",
+            "wardrobe2.jpg",
             "wardrobe3.jpg",
-            "wardrobe44.jpg"
+            "wardrobe4.jpg"
         ],
 
         text: "Практичні шафи-купе, створені під ваш простір. Великий вибір дизайнів та матеріалів."
