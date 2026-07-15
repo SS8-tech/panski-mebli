@@ -7,28 +7,14 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("SMTP ERROR:", error);
-    } else {
-        console.log("SMTP READY");
-    }
-});
 
 
 app.use(cors());
@@ -50,29 +36,29 @@ app.post("/api/contact", async (req, res) => {
 
         console.log("before sendmail");
 
-await transporter.sendMail({
+const { data, error } = await resend.emails.send({
+    from: "Панські меблі <onboarding@resend.dev>",
+    to: process.env.EMAIL_TO,
+    subject: "Нова заявка з сайту Панські меблі",
+    html: `
+        <h2>Нова заявка</h2>
 
+        <p><strong>Ім'я:</strong> ${name}</p>
 
-            from: process.env.EMAIL_USER,
+        <p><strong>Телефон:</strong> ${phone}</p>
 
-            to: process.env.EMAIL_TO,
+        <p><strong>Повідомлення:</strong></p>
 
-            subject: "Нова заявка з сайту Панські меблі",
+        <p>${message}</p>
+    `
+});
 
-            html: `
+if (error) {
+    console.error(error);
+    throw error;
+}
 
-                <h2>Нова заявка</h2>
-
-                <p><strong>Ім'я:</strong> ${name}</p>
-
-                <p><strong>Телефон:</strong> ${phone}</p>
-
-                <p><strong>Повідомлення:</strong></p>
-
-                <p>${message}</p>
-
-            `
-        });
+console.log(data);
 
         console.log("after sendmail");
 
