@@ -360,6 +360,18 @@ const products = {
 }
 
 
+Object.values(products).forEach(function(product) {
+
+    product.images.forEach(function(src) {
+
+        const img = new Image()
+        img.src = src
+
+    })
+
+})
+
+
 
 let selectedProduct = ""
 
