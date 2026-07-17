@@ -307,7 +307,6 @@ window.addEventListener("load", function(){
 
 const modalOverlay = document.querySelector(".modal-overlay")
 const modalTitle = document.querySelector(".modal-title")
-const modalImage = document.querySelector(".modal-image")
 const modalOrder = document.querySelector(".modal-order")
 const closeModal = document.querySelector(".modal-close")
 
@@ -375,29 +374,19 @@ Object.values(products).forEach(function(product) {
 
 let selectedProduct = ""
 
-let currentImage = 0
+let currentSlide = 0
 
 
 // Відкрити модальне вікно
 
-detailsButtons.forEach(function(button){
 
-    const prevBtn = document.querySelector(".gallery-prev")
-    const nextBtn = document.querySelector(".gallery-next")
-
-
-    button.addEventListener("click", function(){
-
-
-        selectedProduct = button.dataset.product
+let images = []
 
 
         modalTitle.textContent = selectedProduct
 
 
-        currentImage = 0
-
-modalImage.src = products[selectedProduct].images[currentImage]
+        currentSlide = 0
 
 
         document.querySelector(".modal-text").textContent =
@@ -411,11 +400,45 @@ modalImage.src = products[selectedProduct].images[currentImage]
         document.body.style.overflow = "hidden"
 
 
-    })
+    
+
+
+detailsButtons.forEach(function(button){
+
+    const prevBtn = document.querySelector(".gallery-prev")
+    const nextBtn = document.querySelector(".gallery-next")
+
+
+    button.addEventListener("click", function(){
+
+
+        selectedProduct = button.dataset.product
+
+
+        track.innerHTML = ""
+
+products[selectedProduct].images.forEach(function(src){
+
+    const img = document.createElement("img")
+
+    img.src = src
+
+    track.appendChild(img)
+
+})
+
+
+
+images = track.querySelectorAll("img")
 
 
 })
 
+})
+
+
+currentSlide = 0
+updateSlider()
 
 
 // Закрити вікно
@@ -507,53 +530,57 @@ modalOrder.addEventListener("click", function(){
 
 })
 
+
 // =========================
 // IMAGE SLIDER
 // =========================
 
-const nextBtn = document.querySelector(".gallery-next")
-const prevBtn = document.querySelector(".gallery-prev")
 
-nextBtn.addEventListener("click", function(){
+const track = document.querySelector(".slider-track")
 
-    currentImage++
+const prevBtn = document.querySelector(".prev")
+const nextBtn = document.querySelector(".next")
 
-    if(currentImage >= products[selectedProduct].images.length){
 
-        currentImage = 0
+
+function updateSlider(){
+
+    track.style.transform =
+        `translateX(-${currentSlide * 100}%)`
+
+}
+
+
+nextBtn.addEventListener("click",function(){
+
+    currentSlide++
+
+    if(currentSlide >= images.length){
+
+        currentSlide = 0
 
     }
 
+    updateSlider()
 
-    modalImage.src =
-    products[selectedProduct].images[currentImage]
-
-    updateDots()
-
-    modalOverlay.classList.add("active")
 })
 
 
 
-prevBtn.addEventListener("click", function(){
+prevBtn.addEventListener("click",function(){
 
-    currentImage--
+    currentSlide--
 
+    if(currentSlide < 0){
 
-    if(currentImage < 0){
-
-        currentImage = products[selectedProduct].images.length - 1
+        currentSlide = images.length - 1
 
     }
 
+    updateSlider()
 
-    modalImage.src =
-    products[selectedProduct].images[currentImage]
-
-    updateDots()
-
-    modalOverlay.classList.add("active")
 })
+
 
 
 // Точки
@@ -572,7 +599,7 @@ function updateDots(){
         const dot = document.createElement("span")
 
 
-        if(index === currentImage){
+        if(index === currentSlide){
 
             dot.classList.add("active")
 
@@ -581,10 +608,9 @@ function updateDots(){
 
         dot.addEventListener("click", function(){
 
-            currentImage = index
+            currentSlide = index
 
-            modalImage.src =
-            products[selectedProduct].images[currentImage]
+            updateSlider()
 
             updateDots()
 
@@ -597,3 +623,6 @@ function updateDots(){
     })
 
 }
+
+
+
