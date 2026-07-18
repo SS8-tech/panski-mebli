@@ -976,6 +976,8 @@ footer{
 
     border-radius:50%;
 
+    color: black;
+
     background:rgba(255,255,255,.9);
 
     cursor:pointer;
