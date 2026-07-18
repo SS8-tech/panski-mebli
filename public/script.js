@@ -380,7 +380,19 @@ let currentSlide = 0
 // Відкрити модальне вікно
 
 
-let images = []
+
+    
+
+
+detailsButtons.forEach(function(button){
+
+    button.addEventListener("click", function(){
+
+
+        selectedProduct = button.dataset.product
+
+
+        let images = []
 
 
         modalTitle.textContent = selectedProduct
@@ -400,21 +412,6 @@ let images = []
         document.body.style.overflow = "hidden"
 
 
-    
-
-
-detailsButtons.forEach(function(button){
-
-    const prevBtn = document.querySelector(".gallery-prev")
-    const nextBtn = document.querySelector(".gallery-next")
-
-
-    button.addEventListener("click", function(){
-
-
-        selectedProduct = button.dataset.product
-
-
         track.innerHTML = ""
 
 products[selectedProduct].images.forEach(function(src){
@@ -424,6 +421,10 @@ products[selectedProduct].images.forEach(function(src){
     img.src = src
 
     track.appendChild(img)
+
+
+    currentSlide = 0
+updateSlider()
 
 })
 
@@ -436,9 +437,6 @@ images = track.querySelectorAll("img")
 
 })
 
-
-currentSlide = 0
-updateSlider()
 
 
 // Закрити вікно
@@ -555,16 +553,15 @@ nextBtn.addEventListener("click",function(){
 
     currentSlide++
 
-    if(currentSlide >= images.length){
+    if(currentSlide >= products[selectedProduct].images.length){
 
         currentSlide = 0
 
     }
 
     updateSlider()
-
+    updateDots()
 })
-
 
 
 prevBtn.addEventListener("click",function(){
@@ -573,11 +570,12 @@ prevBtn.addEventListener("click",function(){
 
     if(currentSlide < 0){
 
-        currentSlide = images.length - 1
+    currentSlide = products[selectedProduct].images.length - 1
 
-    }
+}
 
-    updateSlider()
+   updateSlider()
+   updateDots()
 
 })
 
